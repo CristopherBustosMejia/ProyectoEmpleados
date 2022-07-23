@@ -13,12 +13,11 @@ namespace ProyectoEmpleados.Clases
 {
     internal class CEmpleados
     {
-        public void ShowEmployees(DataGridView EmployeeTable)
+        public void ShowEmployees(DataGridView EmployeeTable, string querry)
         {
             try
             {
                 Clases.CConexion ObjectC = new Clases.CConexion("root","0000");
-                string querry = "select * from empleado	where estado_activiadad = 1;";
                 EmployeeTable.DataSource = null;
                 MySqlDataAdapter adapter = new MySqlDataAdapter(querry,ObjectC.StabConex());
                 DataTable dataTable = new DataTable();
@@ -51,7 +50,7 @@ namespace ProyectoEmpleados.Clases
                 MessageBox.Show("No se guardo el registro \nError: " + ex.ToString());
             }
         }
-        public void SelectEmployees(DataGridView tableEmployee,TextBox a, TextBox b, TextBox c, TextBox d, TextBox e, TextBox f, TextBox g, TextBox h, TextBox i, TextBox j, TextBox k, TextBox l, TextBox m, TextBox n, TextBox o, TextBox p)
+        public void SelectEmployees(DataGridView tableEmployee,TextBox a, TextBox b, TextBox c, TextBox d, TextBox e, TextBox f, TextBox g, TextBox h, TextBox i, TextBox j, TextBox k, TextBox l, TextBox m, TextBox n, TextBox o, TextBox p, TextBox q,TextBox r,TextBox s)
         {
             try
             {
@@ -59,7 +58,28 @@ namespace ProyectoEmpleados.Clases
                 b.Text = tableEmployee.CurrentRow.Cells[1].Value.ToString();
                 c.Text = tableEmployee.CurrentRow.Cells[2].Value.ToString();
                 d.Text = tableEmployee.CurrentRow.Cells[3].Value.ToString();
-                e.Text = tableEmployee.CurrentRow.Cells[4].Value.ToString();
+                string curp = tableEmployee.CurrentRow.Cells[0].Value.ToString();
+                string fec;
+                char[] curpArr = curp.ToCharArray();
+                if (int.Parse((curpArr[4].ToString() + curpArr[5].ToString())) < 20)
+                {
+                    fec = "20";
+                }
+                else
+                {
+                    fec = "19";
+                }
+                string dateB = fec + curpArr[4].ToString() + curpArr[5].ToString();
+                fec = fec + curpArr[4].ToString() + curpArr[5].ToString() + '-' + curpArr[6].ToString() + curpArr[7].ToString() + '-' + curpArr[8].ToString() + curpArr[9].ToString();
+                e.Text = fec.ToString();
+                if (curpArr[10].ToString() == "H")
+                {
+                    q.Text = "Masculino";
+                }
+                else
+                {
+                    q.Text = "Femenino";
+                }
                 f.Text = tableEmployee.CurrentRow.Cells[5].Value.ToString();
                 g.Text = tableEmployee.CurrentRow.Cells[6].Value.ToString();
                 h.Text = tableEmployee.CurrentRow.Cells[7].Value.ToString();
@@ -67,10 +87,19 @@ namespace ProyectoEmpleados.Clases
                 j.Text = tableEmployee.CurrentRow.Cells[9].Value.ToString();
                 k.Text = tableEmployee.CurrentRow.Cells[10].Value.ToString();
                 l.Text = tableEmployee.CurrentRow.Cells[11].Value.ToString();
-                m.Text = tableEmployee.CurrentRow.Cells[12].Value.ToString();
+                string fecIn = tableEmployee.CurrentRow.Cells[12].Value.ToString();
+                char[] fecInArr = fecIn.ToCharArray();
+                string fecInString = fecInArr[6].ToString() + fecInArr[7].ToString() + fecInArr[8].ToString() + fecInArr[9].ToString() + "-" + fecInArr[3].ToString() + fecInArr[4].ToString() + "-" + fecInArr[0].ToString() + fecInArr[1].ToString();
+                m.Text = fecInString;
                 n.Text = tableEmployee.CurrentRow.Cells[13].Value.ToString();
                 o.Text = tableEmployee.CurrentRow.Cells[14].Value.ToString();
                 p.Text = tableEmployee.CurrentRow.Cells[15].Value.ToString();
+                DateTime dateTime = DateTime.Now;
+                string date = dateTime.ToString("yyyy");
+                string dateC = fecInArr[6].ToString() + fecInArr[7].ToString() + fecInArr[8].ToString() + fecInArr[9].ToString();
+                
+                r.Text = (int.Parse(date) - int.Parse(dateB)).ToString() + " años"; 
+                s.Text = (int.Parse(date) - int.Parse(dateC)).ToString() + " años";
             }
             catch (Exception ex)
             {
